@@ -1,11 +1,12 @@
 import Header from './components/header/header';
 import ShopTabs from "./components/shop-tabs/shop-tabs";
 import { getSalesData } from './lib/get-sales';
+import { parsePriceString } from './lib/parse-price';
 import { Sale } from './interfaces/sale.interface';
 
 function exchangePrice( price: string, rate: number, commission: number ): number {
-  const formattedPrice = price.match( /[\d,]+\.?\d*/ )?.[ 0 ]?.replace( /,/g, '' ) || '0';
-  return +( parseFloat( formattedPrice ) * rate * commission ).toFixed( 2 );
+  const n = parsePriceString( price );
+  return +( n * rate * commission ).toFixed( 2 );
 }
 
 async function getSales(): Promise<Sale[]> {
