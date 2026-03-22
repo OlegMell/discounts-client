@@ -7,8 +7,19 @@ import sale from '../models/sale';
 export async function getSalesData() {
     await dbConnect();
 
+    const startOfDay = new Date(  );
+    startOfDay.setHours( 0, 0, 0, 0 );
+    const endOfDay = new Date(  );
+    endOfDay.setHours( 23, 59, 59, 999 );
+
+    const query: any = {};
+    query.createdAt = {
+        $gte: startOfDay,
+        $lt: endOfDay,
+    };
+
     return sale
-        .find( {} )
+        .find( query )
         .populate( { path: 'shop', model: Shop } )
         .populate( { path: 'products', model: Discount } )
         .sort( { _id: -1 } )

@@ -2,10 +2,14 @@ import Header from './components/header/header';
 import ShopTabs from "./components/shop-tabs/shop-tabs";
 import { getSalesData } from './lib/get-sales';
 import { parsePriceString } from './lib/parse-price';
+import { toPlainJson } from './lib/serialize-for-client';
 import { Sale } from './interfaces/sale.interface';
 
 function exchangePrice( price: string, rate: number, commission: number ): number {
   const n = parsePriceString( price );
+  console.log( '[PRICE]', price, n );
+  console.log( '[RATE]', rate );
+  console.log( '[COMMISSION]', commission );
   return +( n * rate * commission ).toFixed( 2 );
 }
 
@@ -38,12 +42,15 @@ export default async function Home() {
   const formattedSales = await exchangePrices( sales, exchanges );
   console.log( '[SALES]', formattedSales );
 
+  const clientSales = toPlainJson( formattedSales );
+  const clientExchanges = toPlainJson( exchanges );
+
   return (
     <div>
-      <Header exchanges={exchanges} />
+      <Header exchanges={clientExchanges} />
       <div style={{ padding: "20px" }}>
         <h1>Знижки сьогодні</h1>
-        <ShopTabs sales={formattedSales} exchanges={exchanges} />
+        <ShopTabs sales={clientSales} exchanges={clientExchanges} />
       </div>
     </div>
   );
