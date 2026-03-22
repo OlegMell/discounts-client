@@ -7,9 +7,6 @@ import { Sale } from './interfaces/sale.interface';
 
 function exchangePrice( price: string, rate: number, commission: number ): number {
   const n = parsePriceString( price );
-  console.log( '[PRICE]', price, n );
-  console.log( '[RATE]', rate );
-  console.log( '[COMMISSION]', commission );
   return +( n * rate * commission ).toFixed( 2 );
 }
 
@@ -40,7 +37,6 @@ export default async function Home() {
   const exchanges = await getExchanges();
 
   const formattedSales = await exchangePrices( sales, exchanges );
-  console.log( '[SALES]', formattedSales );
 
   const clientSales = toPlainJson( formattedSales );
   const clientExchanges = toPlainJson( exchanges );

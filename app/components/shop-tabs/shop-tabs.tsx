@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ProductCard from "../product-card/product-card";
 import styles from "./shop-tabs.module.css";
 import { Sale } from '../../interfaces/sale.interface';
-import { useCart } from '../../context/CartContext';
+import { Shop } from '../../interfaces/shop.interface';
+import { useCart, type CartItem } from '../../context/CartContext';
 import { Product } from '../../interfaces/product.interface';
 
 type ShopTabsProps = {
@@ -14,28 +15,76 @@ type ShopTabsProps = {
 
 const ALL = 'Усі';
 
+type ShopGroup = {
+    shopId: string;
+    shop: Shop;
+    sales: Sale[];
+    products: Product[];
+};
+
+function groupSalesByShop( sales: Sale[] ): ShopGroup[] {
+    const byShop = new Map<string, ShopGroup>();
+    for ( const sale of sales ) {
+        const shopId = sale.shop._id;
+        let group = byShop.get( shopId );
+        if ( !group ) {
+            group = { shopId, shop: sale.shop, sales: [], products: [] };
+            byShop.set( shopId, group );
+        }
+        group.sales.push( sale );
+        const seen = new Set( group.products.map( p => p._id ) );
+        for ( const p of sale.products ) {
+            if ( !seen.has( p._id ) ) {
+                seen.add( p._id );
+                group.products.push( p );
+            }
+        }
+    }
+    return [ ...byShop.values() ];
+}
+
+function dedupeProducts( sales: Sale[] ): Product[] {
+    const seen = new Set<string>();
+    const out: Product[] = [];
+    for ( const sale of sales ) {
+        for ( const p of sale.products ) {
+            if ( !seen.has( p._id ) ) {
+                seen.add( p._id );
+                out.push( p );
+            }
+        }
+    }
+    return out;
+}
+
 export default function ShopTabs( { sales, exchanges }: ShopTabsProps ) {
-    console.log( sales )
-    const [ activeSaleId, setActiveSaleId ] = useState<string | null>( null );
+    const [ activeShopId, setActiveShopId ] = useState<string | null>( null );
     const { addToCart } = useCart();
+
+    const shopGroups = useMemo( () => groupSalesByShop( sales ), [ sales ] );
 
     const usdExchange = exchanges.find( e => e.cc === 'USD' );
     const usdRate = usdExchange ? usdExchange.rate : 1;
 
-    const filteredProducts = sales.find( sale => sale._id === activeSaleId )?.products || sales.flatMap( sale => sale.products );
+    const activeGroup = shopGroups.find( g => g.shopId === activeShopId );
 
-    const minCartPrice = sales.find( sale => sale._id === activeSaleId )?.minCartCost;
+    const filteredProducts = activeGroup
+        ? activeGroup.products
+        : dedupeProducts( sales );
 
-    const handle = ( sale: Sale | typeof ALL ) => {
-        setActiveSaleId( typeof sale === 'string' ? null : sale._id );
+    const minCartPrice = activeGroup
+        ? Math.min( ...activeGroup.sales.map( s => s.minCartCost ) )
+        : undefined;
+
+    const handle = ( group: ShopGroup | typeof ALL ) => {
+        setActiveShopId( typeof group === 'string' ? null : group.shopId );
     }
 
     const handleAddToCart = ( product: Product ) => {
-        // Find the sale that contains this product
-        const sale = sales.find( sale => sale.products.some( p => p._id === product._id ) );
+        const sale = sales.find( s => s.products.some( p => p._id === product._id ) );
         if ( sale ) {
             addToCart( {
-                product,
+                product: product as unknown as Omit<CartItem, "id" | "quantity" | "addedAt">,
                 sale,
             } );
         }
@@ -45,21 +94,21 @@ export default function ShopTabs( { sales, exchanges }: ShopTabsProps ) {
         <div>
             <div className={styles.tabs}>
                 <button
-                    className={`${ styles.tab } ${ !activeSaleId ? styles.active : "" }`}
+                    className={`${ styles.tab } ${ !activeShopId ? styles.active : "" }`}
                     type="button"
                     onClick={() => handle( ALL )}
                 >
                     {ALL}
                 </button>
 
-                {sales.map( ( sale ) => (
+                {shopGroups.map( ( group ) => (
                     <button
-                        key={sale._id}
-                        className={`${ styles.tab } ${ activeSaleId === sale._id ? styles.active : "" }`}
+                        key={group.shopId}
+                        className={`${ styles.tab } ${ activeShopId === group.shopId ? styles.active : "" }`}
                         type="button"
-                        onClick={() => handle( sale )}
+                        onClick={() => handle( group )}
                     >
-                        {sale.shop.title} ({sale.products.length})
+                        {group.shop.title} ({group.products.length})
                     </button>
                 ) )}
             </div>
