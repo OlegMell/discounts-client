@@ -1,25 +1,8 @@
-import dbConnect from './../../../db';
-import Shop from './../../models/shop';
-import Discount from './../../models/product';
-import sale from '../../models/sale';
+import { getSalesData } from '../../lib/get-sales';
 
 export async function GET() {
     try {
-        await dbConnect();
-
-        const now = new Date();
-        const startOfToday = new Date( now.getFullYear(), now.getMonth(), now.getDate() );
-        const startOfTomorrow = new Date( now.getFullYear(), now.getMonth(), now.getDate() + 1 );
-
-        const products = await sale.find( {
-            // createdAt: {
-            //     $gte: startOfToday,
-            //     $lt: startOfTomorrow,
-            // },
-        } )
-            .populate( { path: 'shop', model: Shop } )
-            .populate( { path: 'products', model: Discount } )
-            .sort( { _id: -1 } );
+        const products = await getSalesData();
 
         return Response.json( products );
     } catch ( error ) {

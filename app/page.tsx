@@ -1,5 +1,6 @@
 import Header from './components/header/header';
 import ShopTabs from "./components/shop-tabs/shop-tabs";
+import { getSalesData } from './lib/get-sales';
 import { Sale } from './interfaces/sale.interface';
 
 function exchangePrice( price: string, rate: number, commission: number ): number {
@@ -8,8 +9,7 @@ function exchangePrice( price: string, rate: number, commission: number ): numbe
 }
 
 async function getSales(): Promise<Sale[]> {
-  const res = await fetch( 'http://localhost:3000/api/sale' );
-  return res.json();
+  return getSalesData() as Promise<Sale[]>;
 }
 
 async function exchangePrices( sales: Sale[], exchanges: any[] ) {
