@@ -1,0 +1,64 @@
+.card {
+    display: block;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: black;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.imageWrapper {
+    background: #fafafa;
+    padding: 12px;
+    text-align: center;
+}
+
+.image {
+    object-fit: contain;
+}
+
+.info {
+    padding: 12px;
+}
+
+.name {
+    font-size: 14px;
+    line-height: 1.4;
+    height: 40px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.prices {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.price {
+    font-weight: bold;
+    color: #e60023;
+}
+
+.oldPrice {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 13px;
+}
+
+.cartButton {
+    background-color: orangered;
+    color: var(--foreground);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 8px;
+    width: 100%;
+}

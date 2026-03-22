@@ -1,0 +1,76 @@
+.header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    text-wrap: pretty;
+    position: relative;
+}
+
+.headerTitle {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.headerExchanges {
+    font-size: .8rem;
+    text-wrap: pretty;
+    display: flex;
+    gap: 10px;
+}
+
+.exchangeToggle {
+    display: flex !important;
+}
+
+/* Desktop: Show exchanges in dropdown, always show toggle button */
+@media (min-width: 768px) {
+    .exchangeToggle {
+        display: flex !important;
+    }
+
+    .headerExchanges {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        background-color: var(--background);
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+        flex-direction: column;
+        gap: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        display: none;
+    }
+
+    .headerExchanges[style*="display: flex"] {
+        display: flex !important;
+    }
+}
+
+/* Mobile: Hide exchanges by default, show toggle button */
+@media (max-width: 767px) {
+    .exchangeToggle {
+        display: flex !important;
+    }
+
+    .headerExchanges {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        background-color: var(--background);
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+        flex-direction: column;
+        gap: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        display: none;
+    }
+
+    .headerExchanges[style*="display: flex"] {
+        display: flex !important;
+    }
+}
