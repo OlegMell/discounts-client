@@ -54,7 +54,7 @@ export default function ShopTabs( { sales, exchanges }: ShopTabsProps ) {
 
                 {sales.map( ( sale ) => (
                     <button
-                        key={sale.shop.title}
+                        key={sale._id}
                         className={`${ styles.tab } ${ activeSaleId === sale._id ? styles.active : "" }`}
                         type="button"
                         onClick={() => handle( sale )}
