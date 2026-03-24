@@ -12,9 +12,6 @@ export async function getSalesData() {
     const endOfDay = new Date();
     endOfDay.setHours( 23, 59, 59, 999 );
 
-
-    console.log( 'startOfDay', startOfDay.toISOString() )
-
     const query: any = {};
     query.createdAt = {
         $gte: startOfDay,
@@ -22,7 +19,7 @@ export async function getSalesData() {
     };
 
     return sale
-        .find( query )
+        .find()
         .populate( { path: 'shop', model: Shop } )
         .populate( { path: 'products', model: Discount } )
         .sort( { _id: -1 } )

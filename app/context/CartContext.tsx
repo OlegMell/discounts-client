@@ -2,12 +2,6 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback, useRef } from "react";
 import { Sale } from '../interfaces/sale.interface';
-import { Product } from '../interfaces/product.interface';
-
-interface Order {
-    sale: Sale;
-    products: Product[];
-}
 
 export type CartItem = {
     id: string;
@@ -48,16 +42,15 @@ function getInitialCartState(): any {
 }
 
 export function CartProvider( { children }: { children: ReactNode } ) {
-    const [ items, setItems ] = useState<CartItem[]>( getInitialCartState );
-    const [ cartItems, setCartItems ] = useState<any>( {} );
+    const [ cartItems, setCartItems ] = useState<any>( getInitialCartState );
 
     const hasHydrated = useRef( false );
 
     // Save cart to localStorage whenever it changes
     useEffect( () => {
         hasHydrated.current = true;
-        localStorage.setItem( "cart", JSON.stringify( items ) );
-    }, [ items ] );
+        localStorage.setItem( "cart", JSON.stringify( cartItems ) );
+    }, [ cartItems ] );
 
     const addToCart = useCallback( ( { product, sale }: { product: Omit<CartItem, "id" | "quantity" | "addedAt">; sale: Sale } ) => {
         setCartItems( ( prev: any ) => {
@@ -89,8 +82,6 @@ export function CartProvider( { children }: { children: ReactNode } ) {
                     products: [ { ...product, quantity: 1 } ]
                 }
             }
-
-            console.log( prev )
 
             return { ...prev };
         } );
@@ -143,7 +134,6 @@ export function CartProvider( { children }: { children: ReactNode } ) {
                 sum + product.exchangedPrice * ( product?.quantity || 0 ), 0
             ) || 0 );
             return tmp;
-            console.log( { tmp } )
         }, 0 );
     }, [ cartItems ] );
 

@@ -63,9 +63,6 @@ export default function ShopTabs( { sales, exchanges }: ShopTabsProps ) {
 
     const shopGroups = useMemo( () => groupSalesByShop( sales ), [ sales ] );
 
-    const usdExchange = exchanges.find( e => e.cc === 'USD' );
-    const usdRate = usdExchange ? usdExchange.rate : 1;
-
     const activeGroup = shopGroups.find( g => g.shopId === activeShopId );
 
     const filteredProducts = activeGroup
@@ -119,19 +116,12 @@ export default function ShopTabs( { sales, exchanges }: ShopTabsProps ) {
                 </div>
             )}
 
-            {filteredProducts.length === 0 ? (
+            {!filteredProducts.length ? (
                 <div className={styles.empty}>Немає товарів за сьогодні.</div>
             ) : (
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, 160px)",
-                        gap: "10px",
-                        padding: "20px 0",
-                    }}
-                >
+                <div className={styles.grid}>
                     {filteredProducts.map( ( product ) => (
-                        <ProductCard addToCart={handleAddToCart} key={product._id} product={product} usdRate={usdRate} />
+                        <ProductCard addToCart={handleAddToCart} key={product._id} product={product} />
                     ) )}
                 </div>
             )}

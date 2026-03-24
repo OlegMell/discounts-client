@@ -4,7 +4,7 @@ import { useState } from "react";
 import styles from "./product-card.module.css";
 import { Product } from '../../interfaces/product.interface';
 
-export default function ProductCard( { product, usdRate, addToCart }: { addToCart: any; product: Product; usdRate: number } ) {
+export default function ProductCard( { product, addToCart }: { addToCart: any; product: Product; } ) {
     const [ copied, setCopied ] = useState( false );
     const [ addedToCart, setAddedToCart ] = useState( false );
 
@@ -34,7 +34,7 @@ export default function ProductCard( { product, usdRate, addToCart }: { addToCar
             className={styles.card}
         >
             <div className={styles.imageWrapper}>
-                <img src={product.image} alt={product.name} />
+                <img className={styles.image} src={product.image} alt={product.name} />
             </div>
 
             <div className={styles.info}>
@@ -64,10 +64,7 @@ export default function ProductCard( { product, usdRate, addToCart }: { addToCar
                     </div>
 
                     {product.old_price && (
-                        <div className='flex flex-col'>
-                            <span className={styles.oldPrice}>{product.old_price}</span>
-                            <span className={styles.oldPrice}>₴{( ( parseFloat( product.old_price.match( /[\d,]+\.?\d*/ )?.[ 0 ]?.replace( /,/g, '' ) || '0' ) * usdRate ) * 1.011 ).toFixed( 2 )}</span>
-                        </div>
+                        <span className={styles.oldPrice}>{product.old_price}</span>
                     )}
                 </div>
 
