@@ -7,10 +7,13 @@ import sale from '../models/sale';
 export async function getSalesData() {
     await dbConnect();
 
-    const startOfDay = new Date(  );
+    const startOfDay = new Date();
     startOfDay.setHours( 0, 0, 0, 0 );
-    const endOfDay = new Date(  );
+    const endOfDay = new Date();
     endOfDay.setHours( 23, 59, 59, 999 );
+
+
+    console.log( 'startOfDay', startOfDay.toISOString() )
 
     const query: any = {};
     query.createdAt = {

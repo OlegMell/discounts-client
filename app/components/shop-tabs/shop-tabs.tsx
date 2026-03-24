@@ -125,8 +125,8 @@ export default function ShopTabs( { sales, exchanges }: ShopTabsProps ) {
                 <div
                     style={{
                         display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, 180px)",
-                        gap: "20px",
+                        gridTemplateColumns: "repeat(auto-fill, 160px)",
+                        gap: "10px",
                         padding: "20px 0",
                     }}
                 >
