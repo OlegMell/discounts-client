@@ -28,7 +28,9 @@ async function exchangePrices( sales: Sale[], exchanges: any[] ) {
 }
 
 async function getExchanges() {
-  const res = await fetch( 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json' );
+  const res = await fetch( 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json', {
+    cache: 'no-store'
+  } );
   return res.json();
 }
 
