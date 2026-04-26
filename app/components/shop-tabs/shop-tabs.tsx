@@ -10,7 +10,7 @@ import { Product } from '../../interfaces/product.interface';
 
 type ShopTabsProps = {
     sales: Sale[];
-    exchanges: { cc: string; rate: number }[]; // Replace 'any' with the actual type for exchanges if available
+    exchanges: { cc: string; rate: number }[];
 };
 
 const ALL = 'Усі';
@@ -69,9 +69,25 @@ export default function ShopTabs( { sales, exchanges }: ShopTabsProps ) {
         ? activeGroup.products
         : dedupeProducts( sales );
 
-    const minCartPrice = activeGroup
-        ? Math.min( ...activeGroup.sales.map( s => s.minCartCost ) )
-        : undefined;
+    const activeSalesProgress = useMemo( () => {
+        if ( !activeGroup ) {
+            return [];
+        }
+
+        return activeGroup.sales.map( ( sale ) => {
+            const exchange = exchanges.find( ( e ) => e.cc === sale.currency );
+            const rate = exchange ? exchange.rate : 1;
+            const orderedTotal = sale.orderedTotal ?? 0;
+            const minCartCostUah = sale.minCartCost * rate * sale.commission;
+
+            return {
+                sale,
+                orderedTotal,
+                minCartCostUah,
+                remainingToMinCart: Math.max( 0, minCartCostUah - orderedTotal )
+            };
+        } );
+    }, [ activeGroup, exchanges ] );
 
     const handle = ( group: ShopGroup | typeof ALL ) => {
         setActiveShopId( typeof group === 'string' ? null : group.shopId );
@@ -110,11 +126,30 @@ export default function ShopTabs( { sales, exchanges }: ShopTabsProps ) {
                 ) )}
             </div>
 
-            {minCartPrice && (
-                <div>
-                    <b>Мінімальна сума кошика: ${minCartPrice}</b>
+            {
+                ( activeGroup && activeGroup?.shop.delivery ) && (
+                    <div className={styles.deliveryInfo}>
+                        {activeGroup.shop.delivery}
+                    </div>
+                )
+            }
+
+            {/* {activeSalesProgress.length > 0 && (
+                <div className={styles.saleProgressList}>
+                    {activeSalesProgress.map( ( progress ) => (
+                        <div key={progress.sale._id} className={styles.saleProgress}>
+                            <div className={styles.saleProgressTitle}>
+                                {`Сейл ${ progress.sale._id.slice( -6 ) } — ${ progress.sale.currency }`}
+                            </div>
+                            <div>Уже замовлено: ₴{progress.orderedTotal.toFixed( 2 )}</div>
+                            <div>Мінімальна сума в UAH: ₴{progress.minCartCostUah.toFixed( 2 )}</div>
+                            <div>
+                                Не вистачає: ₴{progress.remainingToMinCart.toFixed( 2 )}
+                            </div>
+                        </div>
+                    ) )}
                 </div>
-            )}
+            )} */}
 
             {!filteredProducts.length ? (
                 <div className={styles.empty}>Немає товарів за сьогодні.</div>

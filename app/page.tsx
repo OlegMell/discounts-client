@@ -46,7 +46,7 @@ export default async function Home() {
   return (
     <div>
       <Header exchanges={clientExchanges} />
-      <div style={{ padding: "20px" }}>
+      <div style={{ padding: "20px" }}> 
         <h1>Знижки сьогодні</h1>
         <ShopTabs sales={clientSales} exchanges={clientExchanges} />
       </div>

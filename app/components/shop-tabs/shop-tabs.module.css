@@ -32,6 +32,25 @@
     color: rgba(0, 0, 0, 0.6);
 }
 
+@media (prefers-color-scheme: dark) {
+    .tabs {
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .tab {
+        border-color: rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .tab:hover {
+        border-color: rgba(255, 255, 255, 0.24);
+    }
+
+    .empty {
+        color: rgba(255, 255, 255, 0.75);
+    }
+}
+
 .grid {
     width: 100%;
     box-sizing: border-box;
@@ -47,6 +66,38 @@
 @media (min-width: 480px) {
     .grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.saleProgressList {
+    display: grid;
+    gap: 12px;
+    padding: 12px 0;
+}
+
+.saleProgress {
+    background: #fff7ed;
+    border: 1px solid rgba(255, 127, 0, 0.15);
+    border-radius: 14px;
+    padding: 14px 16px;
+    color: #1f1f1f;
+}
+
+.saleProgressTitle {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #111111;
+}
+
+@media (prefers-color-scheme: dark) {
+    .saleProgress {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 127, 0, 0.28);
+        color: #f3f3f3;
+    }
+
+    .saleProgressTitle {
+        color: #ffffff;
     }
 }
 

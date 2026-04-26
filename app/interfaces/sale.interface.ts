@@ -7,6 +7,7 @@ export interface Sale {
     products: Product[];
     minCartCost: number;
     commission: number;
+    orderedTotal?: number;
     createdAt: string;
     currency: string;
 }

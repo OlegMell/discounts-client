@@ -12,6 +12,12 @@
     font-weight: bold;
 }
 
+@media (max-width: 767px) {
+    .headerTitle {
+        font-size: 1.5rem;
+    }
+}
+
 .headerExchanges {
     font-size: .8rem;
     text-wrap: pretty;

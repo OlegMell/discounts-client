@@ -58,7 +58,7 @@ export default function Header( { exchanges }: { exchanges: any[] } ) {
                         ) )}
                     </div>
 
-                    <button
+                    {/* <button
                         onClick={() => setIsCartOpen( true )}
                         style={{
                             position: 'relative',
@@ -92,7 +92,7 @@ export default function Header( { exchanges }: { exchanges: any[] } ) {
                                 {itemCount}
                             </span>
                         )}
-                    </button>
+                    </button> */}
                 </div>
             </header>
             <CartDialog isOpen={isCartOpen} onClose={() => setIsCartOpen( false )} usdRate={usdRate} />

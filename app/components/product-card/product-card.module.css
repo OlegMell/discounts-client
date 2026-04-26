@@ -6,10 +6,12 @@
     text-decoration: none;
     color: black;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card:hover {
-    transform: translateY(-4px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
 }
 
@@ -60,7 +62,9 @@
     border: none;
     padding: 8px 16px;
     border-radius: 4px;
+    font-size: .8rem;
     cursor: pointer;
     margin-top: 8px;
     width: 100%;
+    bottom: 0;
 }

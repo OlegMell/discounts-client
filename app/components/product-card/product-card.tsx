@@ -40,7 +40,7 @@ export default function ProductCard( { product, addToCart }: { addToCart: any; p
             <div className={styles.info}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: '8px' }}>
                     <div className={styles.name}>{product.name}</div>
-                    <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                    {/* <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
                         <button
                             onClick={handleCopyLink}
                             title="Copy link"
@@ -54,7 +54,7 @@ export default function ProductCard( { product, addToCart }: { addToCart: any; p
                         >
                             {copied ? '✓' : '🔗'}
                         </button>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className={styles.prices}>
@@ -68,7 +68,9 @@ export default function ProductCard( { product, addToCart }: { addToCart: any; p
                     )}
                 </div>
 
-                <button onClick={handleAddToCart} type='button' className={styles.cartButton}> {addedToCart ? 'Додано ✓' : 'В кошик 🛒'}</button>
+                {/* <button onClick={handleAddToCart} type='button' className={styles.cartButton}> {addedToCart ? 'Додано ✓' : 'В кошик 🛒'}</button> */}
+                
+                <button onClick={handleCopyLink} type='button' className={styles.cartButton}> {copied ? 'Скопійовано' : 'Копіювати посилання'}</button>
             </div>
         </a>
     );
